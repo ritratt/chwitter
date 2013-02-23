@@ -1,0 +1,45 @@
+<html>
+
+<title> Chwitter for {{ user }} </title>
+
+<h1> {{ user }} </h1>
+
+<body>
+ <div id="userinfo" style="width:50%;float:left;">
+<form action = "" method = "post">{% csrf_token %}
+	{{ form_chweet }}
+	<input type="submit" name="chweet" value="Chweet">
+</form>
+
+<form action = "" method = "post">{% csrf_token %}
+	{{ form_follow }}
+	<input type="submit" name="follow" value="Follow">
+</form>
+{{ follow_error }}
+</form>
+<br>
+Following: <br>
+<ul>
+	{{ following_msg }}
+	{% for user in users %}
+	    <li>{{ user }}</li>
+	{% endfor %}
+</ul>
+<br>
+</div>
+<div id="chweets" style="width:50%;float:right;">
+Chweets from users you follow:
+<br>
+<ul>
+	{% for chweet in chweets %}
+		<li> {{ chweet }} </li>
+	{% empty %}
+		<p> There are no chweets from the users you are following.</p>
+	{% endfor %}
+</ul>
+</div>
+
+<div id="footer" style = "clear:both;">
+<form action="" method="post">{% csrf_token %}
+	<input type="submit" name="logout" value="Logout">
+</div>	

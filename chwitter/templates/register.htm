@@ -1,0 +1,15 @@
+<html>
+
+<title> Welcome to Chwitter </title>
+
+<body>
+
+<form action="" method="post">{% csrf_token %}
+	<table>
+	{{ form.as_table }}
+	</table>
+	<input type="submit" value="Register">
+</form>
+</body>
+
+</html>

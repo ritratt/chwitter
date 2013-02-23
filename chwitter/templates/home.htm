@@ -1,0 +1,17 @@
+<html>
+
+<title> Chwitter Login Page </title>
+
+<body>
+	<h> {{ special_message }} </h>
+	<form action="" method="post">{% csrf_token %}
+	<table>
+		{{ form.as_table }}
+	</table>
+	<input type="submit" value="Login">
+
+<br>
+<a href="register.htm">Please click here to create a new ID.</a>
+</body>
+
+</html>
