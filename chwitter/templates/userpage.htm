@@ -1,22 +1,45 @@
 <html>
 
+<head>
 <title> Chwitter for {{ user }} </title>
-
-<h1> {{ user }} </h1>
+ <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+</head>
+<div class="page-header">
+	<div class="row">
+		<div class="span4 offset1"> <h1> {{ user }} </h1> </div>
+		<div class="span3 offset4"> 
+ 			<form action="" method="post">{% csrf_token %}
+			<button type="submit" name="logout" class="btn btn-danger" type="button"><i class="icon-off"></i> Logout</button>
+</form>
+		 </div>
+	</div>
+</div>
 
 <body>
- <div id="userinfo" style="width:50%;float:left;">
-<form action = "" method = "post">{% csrf_token %}
-	{{ form_chweet }}
-	<input type="submit" name="chweet" value="Chweet">
-</form>
+<div class="tabbable">
+<ul class="nav nav-tabs">
+        <li class="active"><a href="userpage" data-toggle="tab">Home</a></li>
+        <li><a href="userlist" data-toggle="tab">List Users</a></li>
+</ul>
+<div class="tab-content">
+        <div class="tab-pane-active" id="userpage">
+	<div id="userinfo" style="width:50%;float:left;">
+	{% load bootstrap_toolkit %}
+	<form action = "" class="form-vertical" method = "post">{% csrf_token %}
+		{{ form_chweet|as_bootstrap:layout_chweet }}
+		<input type="submit" class="btn btn-primary" name="chweet" value="Chweet">
+	</form>
 
 <form action = "" method = "post">{% csrf_token %}
-	{{ form_follow }}
-	<input type="submit" name="follow" value="Follow">
+	{{ form_follow|as_bootstrap }}
+        <button type="submit" class="btn btn-inverse" name="follow">Follow</button>
 </form>
 {{ follow_error }}
+<form action = "" method = "post">{% csrf_token %}
+        {{ form_unfollow|as_bootstrap }}
+        <button type="submit" class="btn btn-inverse" name="unfollow">Unfollow</button>
 </form>
+{{ unfollow_error }}
 <br>
 Following: <br>
 <ul>
@@ -28,8 +51,8 @@ Following: <br>
 <br>
 </div>
 <div id="chweets" style="width:50%;float:right;">
-Chweets from users you follow:
-<br>
+<div class="hero-unit">
+<h4>Chweets from users you follow:</h4>
 <ul>
 	{% for chweet in chweets %}
 		<li> {{ chweet }} </li>
@@ -37,9 +60,8 @@ Chweets from users you follow:
 		<p> There are no chweets from the users you are following.</p>
 	{% endfor %}
 </ul>
+</div>
 =======
-<br>
-Recent followers:
 <br>
 Recent followers:
 <br>
@@ -50,9 +72,11 @@ Recent followers:
 		<p> No new followers subscribed to you. </p>
 	{% endfor %}
 </ul>
-</div>
 
+</div>
+</div>
+        <div class="tab-pane" id="userlist">User List Follow</div>
+ </div>
 <div id="footer" style = "clear:both;">
-<form action="" method="post">{% csrf_token %}
-	<input type="submit" name="logout" value="Logout">
 </div>	
+

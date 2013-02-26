@@ -1,17 +1,27 @@
+<!DOCTYPE html>
 <html>
-
+<head>
 <title> Chwitter Login Page </title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 <body>
-	<h> {{ special_message }} </h>
-	<form action="" method="post">{% csrf_token %}
-	<table>
-		{{ form.as_table }}
-	</table>
-	<input type="submit" value="Login">
+<div class="page-header"> <h1> <p class="text-center"> Chwitter Login </p> </h1> </div>
+<div class="hero-unit">
+{% load bootstrap_toolkit %}
+	<h> <div class="alert alert-success"> {{ special_message }} </div> </h>
+		<form action="" class="form-horizontal" method="post">
+			{{ form|as_bootstrap:layout }}
+			{% csrf_token %}
+			<button type="Submit" class="btn btn-primary" name="login"><i class="icon-ok icon-white"></i> Login</button>		</form>
+
 
 <br>
 <a href="register.htm">Please click here to create a new ID.</a>
+</div>
+<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 class RegisterForm(forms.Form):
 	username = forms.CharField(max_length = 100, label = 'Username')
@@ -14,3 +15,16 @@ class ChweetForm(forms.Form):
 
 class FollowForm(forms.Form):
 	username = forms.CharField(max_length = 100)
+
+class UnfollowForm(forms.Form):
+        username = forms.CharField(max_length = 100)
+
+class ListFollowForm(forms.Form):
+	users = User.objects.all().values('username').order_by('username')
+	user_list = []
+	for user in users:
+		user_list.append(user['username'])
+	user_tuple = zip(user_list, user_list)
+	userlist = forms.ChoiceField( 
+        choices=user_tuple 
+    	)

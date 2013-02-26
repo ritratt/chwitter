@@ -4,7 +4,7 @@ import views
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('',('^$', views.home), ('^register', views.register), ('^userpage$', views.userpage),
+urlpatterns = patterns('',('^$', views.home), ('^register', views.register), ('^userpage$', views.userpage), ('^userlist$',views.listfollow),
     # Examples:
     # url(r'^$', 'chwitter.views.home', name='home'),
     # url(r'^chwitter/', include('chwitter.foo.urls')),

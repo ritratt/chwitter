@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<title> User List </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+</head>
+<div class="page-header">
+        <div class="row">
+                <div class="span4 offset1"> <h1> {{ user }} </h1> </div>
+                <div class="span3 offset4"> 
+                        <form action="" method="post">{% csrf_token %}
+                        <button type="submit" name="logout" class="btn btn-danger" type="button"><i class="icon-off"></i> Logout</button>
+</form>
+                 </div>
+        </div>
+</div>
+
+<body>
+<div class="tabbable">
+<ul class="nav nav-tabs">
+        <li><a href="userpage" data-toggle="tab">Home</a></li>
+        <li class="active"><a href="userlist" data-toggle="tab">List Users</a></li>
+</ul>
+
+{% load bootstrap_toolkit %}
+<div class="tab-content">
+        <div class="tab-pane-active" id="userlist">
+
+	<form action = "" method="post">{% csrf_token %}
+		{{ form|as_bootstrap }}
+		<button type="submit" class="btn" name="follow">Follow</button>
+	</form>
+{{ follow_error }}
+</div> </div>
+</body>
+</html>

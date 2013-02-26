@@ -46,7 +46,7 @@ def home(request):
 				return HttpResponse('Incorrect/Non-existent credentials.')
 	else:
 		form = LoginForm()
-	return render_to_response('home.htm', {'form':form, 'special_message':request.session['specialmsg']}, context_instance = RequestContext(request))
+	return render_to_response('home.htm', {'form':form, 'special_message':request.session['specialmsg'], 'layout':'horizontal'}, context_instance = RequestContext(request))
 
 def register(request):
 	if request.method == 'POST':
@@ -66,12 +66,13 @@ def register(request):
 			return HttpResponseRedirect('/')
 	else:
 		form = RegisterForm()
-	return render_to_response('register.htm', {'form':form}, context_instance = RequestContext(request))
+	return render_to_response('register.htm', {'form':form, 'layout':'horizontal'}, context_instance = RequestContext(request))
 
 def userpage(request):
 	
 	#These three variables are used later for displaying some informative errors to the user.
 	follow_error = ''
+	unfollow_error = ''
 	request.session['following_msg'] = ''
 	request.session['nochweets_msg'] = ''
 
@@ -121,11 +122,49 @@ def userpage(request):
 						follow_error = 'You are now following ' + username_follow + ' !'
 				else:
 					follow_error = 'User not found.'
+		elif 'unfollow' in request.POST:
+			form_unfollow = UnfollowForm(request.POST)
+                        if form_unfollow.is_valid():
+                                username_unfollow = form_unfollow.cleaned_data['username']
+                                if User.objects.filter(username = username_unfollow).count():     #Check through try if user already follows the given user. If so set follow_error accordingly.
+                                        try:
+                                                dup_check = Following.objects.get(user = request.user.username, following = username_unfollow)
+						dup_check.delete()
+                                        except Following.DoesNotExist:  #This exception means no such row exists which means not following the given user.
+                                                unfollow_error = 'You are not following ' + username_follow + '.'
+                                else:
+                                        follow_error = 'User not found.'
 		elif 'logout' in request.POST:
 			auth.logout(request)
 			request.session['LOGOUT'] = True
 			return HttpResponseRedirect('/')
 	form_chweet = ChweetForm()
 	form_follow = FollowForm()
-	return render_to_response('userpage.htm', {'form_chweet':form_chweet, 'form_follow':form_follow, 'users':following_users, 'follow_error':follow_error, 'following_msg':request.session['following_msg'], 'chweets':chweetstodisplay
+	form_unfollow = UnfollowForm()
+	return render_to_response('userpage.htm', {'form_chweet':form_chweet, 'layout_chweet':'horizontal', 'form_follow':form_follow, 'users':following_users, 'follow_error':follow_error, 'form_unfollow':form_unfollow, 'unfollow_error':unfollow_error, 'following_msg':request.session['following_msg'], 'chweets':chweetstodisplay
 }, context_instance = RequestContext(request))
+
+
+def listfollow(request):
+	follow_error = ''
+	username = request.user.username
+	if request.method == 'POST':
+		if 'follow' in request.POST:
+			form = ListFollowForm(request.POST)
+			if form.is_valid():
+				username_follow = form.cleaned_data['userlist']
+				print username_follow
+				try:
+					dup_check = Following.objects.get(user = request.user.username, following = username_follow)
+					follow_error = 'You are already following ' + username_follow + '.'
+				except Following.DoesNotExist:  #This exception means no such row exists which means not following the given user.
+					frow = Following(user = request.user.username, following = username_follow)
+					frow.save()
+					follow_error = 'You are now following ' + username_follow + ' !'
+		elif 'logout' in request.POST:
+			auth.logout(request)
+                        request.session['LOGOUT'] = True
+                        return HttpResponseRedirect('/')
+
+	form = ListFollowForm()
+	return render_to_response('userlist.htm', {'form':form, 'follow_error':follow_error, 'user':username}, context_instance = RequestContext(request))
