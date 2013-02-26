@@ -37,6 +37,17 @@ Chweets from users you follow:
 		<p> There are no chweets from the users you are following.</p>
 	{% endfor %}
 </ul>
+=======
+<br>
+Recent followers:
+<br>
+<ul>
+	{% for follower in recent_followers %}
+		<li> {{ follower }} </li>
+	{% empty %}
+		<p> No new followers subscribed to you. </p>
+	{% endfor %}
+</ul>
 </div>
 
 <div id="footer" style = "clear:both;">
