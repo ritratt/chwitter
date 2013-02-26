@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from userdata.models import Chweets, Following
 
 def home(request):
-''' Home page i.e. Login Page.'''
+	''' Home page i.e. Login Page.'''
 	try:
 		#Check REG flag and LOGOUT flag then set special message accordingly.
 		if request.session['REG']:
